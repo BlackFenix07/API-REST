@@ -19,4 +19,5 @@ const Route = use('Route')
 Route.group(() => {
   Route.post('users/register', "UserController.store");
   Route.post('users/login', "UserController.login");
+  Route.get('projects', "ProjectController.index");
 }).prefix('api/v1');
