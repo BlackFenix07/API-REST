@@ -1,10 +1,17 @@
 'use strict';
 
+const User = use('App/Models/User');
+
 class UserController {
-  store() {
-    return {
-      message: "Usuario creado desde el controlador",
-    };
+  store({ request }) {
+    const { username, email, password } = request.all();
+    console.log(username, email, password);
+    const user = User.create({
+      username,
+      email,
+      password,
+    });
+    return user;
   }
 }
 
