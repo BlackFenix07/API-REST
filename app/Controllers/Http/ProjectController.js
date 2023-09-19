@@ -1,7 +1,7 @@
 'use strict';
 
 const Project = use('App/Models/Project');
-
+const AuthorizationService = use('App/Services/AuthorizationService');
 class ProjectController {
   async index({ auth }) {
     const user = await auth.getUser();
@@ -19,15 +19,11 @@ class ProjectController {
     return project;
   }
 
-  async destroy({ auth, response, params }) {
+  async destroy({ auth, params }) {
     const user = await auth.getUser();
     const { id } = params;
     const project = await Project.find(id);
-    if (project.user_id !== user.id) {
-      return response.status(403).json({
-        message: "No estás autorizado para eliminar este proyecto",
-      })
-    }
+    AuthorizationService.verifyPermission(project, user);
     await project.delete();
     return project;
   }
